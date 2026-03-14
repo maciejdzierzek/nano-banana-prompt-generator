@@ -1,0 +1,12 @@
+{
+  "name": "nano-banana-prompt-generator",
+  "description": "Generate professional Nano Banana (Gemini image) prompts. Generation, editing, YouTube thumbnails, infographics.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Maciej Dzierżek",
+    "url": "https://maciejdzierzek.com"
+  },
+  "homepage": "https://maciejdzierzek.com/narzedzia/generator-nano-banana",
+  "repository": "https://github.com/maciejdzierzek/nano-banana-prompt-generator",
+  "license": "MIT"
+}
