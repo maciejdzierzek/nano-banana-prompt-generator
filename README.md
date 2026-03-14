@@ -45,7 +45,16 @@ Claude will automatically use the skill when you describe a Nano Banana image ta
 
 > **Note:** Skills require code execution to be enabled. If you don't see the Skills section, go to **Settings > Capabilities** and enable "Code execution and file creation" first.
 
-### Claude Code (CLI)
+### Claude Code (CLI) - via plugin marketplace
+
+```bash
+/plugin marketplace add maciejdzierzek/nano-banana-prompt-generator
+/plugin install nano-banana-prompt-generator@maciejdzierzek-nano-banana-prompt-generator
+```
+
+No download needed - installs directly from this GitHub repository.
+
+### Claude Code (CLI) - manual install
 
 ```bash
 mkdir -p ~/.claude/skills/nano-banana
