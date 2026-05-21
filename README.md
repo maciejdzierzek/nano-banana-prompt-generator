@@ -1,8 +1,8 @@
-# Nano Banana Pro Prompt Generator - Claude Skill
+# Nano Banana Prompt Generator - Claude Skill
 
-> A Claude skill for generating professional Nano Banana image prompts.
+> A Claude skill for generating professional Nano Banana / Gemini image prompts.
 > Works with Claude.ai, Claude Desktop, and Claude Code.
-> Supports Image Generation, Photo Editing, YouTube Thumbnails, and Infographics.
+> Supports Image Generation, Photo Editing, YouTube Thumbnails, Infographics, Storyboards.
 
 [![Live Generator](https://img.shields.io/badge/Live_Generator-maciejdzierzek.com-blue)](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-orange)](https://claude.ai)
@@ -10,28 +10,34 @@
 
 ## What is this?
 
-A skill for Claude that helps you write effective prompts for Nano Banana - Google's family of AI image generation models built into Gemini. Unlike most AI image tools that expect tag lists, Nano Banana works like a creative director: it understands intent, context, and full-sentence descriptions.
+A skill for Claude that helps you write effective prompts for Nano Banana - Google's family of AI image generation models in the Gemini API. Unlike most AI image tools that expect tag lists, Nano Banana works like a creative director: it understands intent, context, and full-sentence descriptions.
 
-Works with **Claude.ai** (web), **Claude Desktop**, and **Claude Code** - all three support the same skill format via the Customize > Skills panel.
+Works with **Claude.ai** (web), **Claude Desktop**, and **Claude Code** - all three support the same skill format.
 
-The current default model is **Nano Banana 2** (Gemini 3.1 Flash Image), combining Pro-quality reasoning with Flash speed. It supports text rendering in 100+ languages, multi-character consistency (up to 5 characters), up to 14-object fidelity, 4K resolution, and integration with Veo 3.1 for animation pipelines.
+The skill covers all three current Gemini image models:
 
-This skill was built by [Maciej Dzierżek](https://maciejdzierzek.com) and used daily in production workflows across image generation, content creation, and YouTube thumbnail design.
+| Marketing name | Model code | Status |
+|---|---|---|
+| **Nano Banana** | `gemini-2.5-flash-image` | Stable |
+| **Nano Banana 2** | `gemini-3.1-flash-image-preview` | Preview |
+| **Nano Banana Pro** | `gemini-3-pro-image-preview` | Preview |
 
-**Try the interactive web version:** [maciejdzierzek.com/narzedzia/generator-nano-banana](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
+Every model spec, capability, and price in this skill is verified against [ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs). See `SKILL.md` "Verification & Sources" for the full URL list.
+
+**Try the interactive web generator (no install):** [maciejdzierzek.com/narzedzia/generator-nano-banana](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
 
 ## Features
 
-- **4 generation modes:** Image Generation, Photo Editing, YouTube Thumbnails, Infographics
-- Text rendering in 100+ languages - render Polish headlines, Japanese labels, Arabic text
-- In-image translation (new in 2026) - translate text inside existing images while preserving design
-- Multi-character consistency - up to 5 characters across a workflow
-- Multi-reference compositions - up to 14 objects with high fidelity
-- Conversational iterative editing - refine images without starting from scratch
-- Real-world knowledge via Search grounding for accurate diagrams and data visualizations
-- Video production pipeline support - generate storyboard keyframes for Veo 3.1 handoff
-- Golden Rules for prompting - no tag soup, no vague descriptions, no wasted retries
-- Ready-to-use templates for every category
+- **5 generation modes:** Image Generation, Photo Editing, YouTube Thumbnails, Infographics, Storyboards
+- Per-model guidance: choose between Stable (Nano Banana) and Preview (NB2, Pro) based on the task
+- Conversational editing patterns - refine iteratively without re-rolling
+- Multi-character consistency - up to 5 characters (Pro) or 4 (NB2) with documented limits
+- Multi-reference compositions - up to 14 reference images with role assignment
+- In-image text translation - preserve design while changing language
+- Image Search Grounding - pull real, current data into infographics (NB2 and Pro)
+- Storyboard frames for Veo handoff - prompt patterns for video-pipeline workflows
+- Verified pricing reference - per-tier (Standard / Batch / Flex / Priority) costs
+- Trigger accuracy eval suite for the skill-creator framework
 
 ## Installation
 
@@ -49,7 +55,7 @@ Claude will automatically use the skill when you describe a Nano Banana image ta
 
 ```bash
 /plugin marketplace add maciejdzierzek/nano-banana-prompt-generator
-/plugin install nano-banana-prompt-generator@maciejdzierzek-nano-banana-prompt-generator
+/plugin install nano-banana-prompt-generator@maciejdzierzek
 ```
 
 No download needed - installs directly from this GitHub repository.
@@ -58,13 +64,13 @@ No download needed - installs directly from this GitHub repository.
 
 ```bash
 mkdir -p ~/.claude/skills/nano-banana
-cp skills/nano-banana/SKILL.md ~/.claude/skills/nano-banana/SKILL.md
+cp -r skills/nano-banana/* ~/.claude/skills/nano-banana/
 ```
 
 For project-specific use:
 ```bash
 mkdir -p /your-project/.claude/skills/nano-banana
-cp skills/nano-banana/SKILL.md /your-project/.claude/skills/nano-banana/SKILL.md
+cp -r skills/nano-banana/* /your-project/.claude/skills/nano-banana/
 ```
 
 Reload Claude Code. The skill activates automatically.
@@ -72,35 +78,51 @@ Reload Claude Code. The skill activates automatically.
 ### Interactive web generator (no installation)
 
 Use directly at: [maciejdzierzek.com/narzedzia/generator-nano-banana](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
-No API, no registration, no data sent to servers. Works in your browser.
+No API key, no registration, no data sent to servers. Works in your browser.
 
 ## Usage
 
-Describe what you want to create - the skill adapts to all four modes:
+Describe what you want - the skill picks the right model and template:
 
 **Image Generation:**
 ```
 Generate a Nano Banana prompt for a product photo of my coffee grinder.
-I want a minimalist studio look, white background, space for text on the right.
+Minimalist studio look, white background, space for text on the right.
 ```
 
 **Photo Editing:**
 ```
 I have a photo of a storefront in summer. Write a Nano Banana prompt
-to transform it into a winter scene while keeping the building exactly the same.
+to transform it into winter while keeping the building exactly the same.
 ```
 
 **YouTube Thumbnail:**
 ```
-I need a thumbnail for my iPhone review video. I want the excited-person-on-left,
+I need a thumbnail for my iPhone review video. Excited-person-on-left,
 product-on-right layout. Help me write it.
 ```
 
-**Infographic:**
+**Infographic with current data:**
 ```
-Create a Nano Banana prompt for a comparison infographic: Agency vs In-house AI team.
-4 advantages on each side, square format for LinkedIn.
+Create a Nano Banana Pro prompt for an infographic showing this quarter's
+top-5 economies' GDP growth. Use real, current data via search grounding.
 ```
+
+**Storyboard for Veo:**
+```
+Write Nano Banana prompts for 6 storyboard frames showing the same character
+walking through a forest as the seasons change. Keyframes for Veo handoff.
+```
+
+## Model Selection (verified against per-model spec pages)
+
+| Use case | Recommended model | Why |
+|---|---|---|
+| High-volume generation, conversational editing, lowest cost | Nano Banana | Stable, $0.039 / image, mature |
+| Thumbnails with text, current-data infographics, 0.5K-4K range | Nano Banana 2 | Adds thinking, search grounding, 14 aspect ratios, 0.5K resolution |
+| Studio-quality work, dense text, professional infographics | Nano Banana Pro | Highest fidelity, 5-character consistency, search-grounded, 3-4x more expensive |
+
+Pricing details: see `skills/nano-banana/references/pricing.md`.
 
 ## Prompt Structures
 
@@ -118,7 +140,7 @@ Create a Nano Banana prompt for a comparison infographic: Agency vs In-house AI 
 ```
 [Action verb] + [specific element] + [desired result].
 KEEP UNCHANGED: [list of what must stay the same].
-[Style/quality requirements]. [Technical specs].
+[Style/quality requirements].
 ```
 
 ### YouTube Thumbnail
@@ -126,7 +148,7 @@ KEEP UNCHANGED: [list of what must stay the same].
 ```
 YouTube thumbnail for [TOPIC]:
 
-SUBJECT: [person description + expression + position in frame]
+SUBJECT: [person + expression + position in frame]
 PRODUCT/VISUAL: [what to show on the other side]
 TEXT: "[HEADLINE]" [font style, size, color, position]
 BACKGROUND: [treatment]
@@ -153,45 +175,33 @@ AVOID: Drop shadows, 3D effects, gradients on charts
 
 ## Examples
 
-See [examples/](examples/) for ready-to-use prompts with expected output notes:
+See [examples/](examples/) for ready-to-use prompts:
 
 - [generation.md](examples/generation.md) - product photography, portraits, cinematic scenes
 - [editing.md](examples/editing.md) - object removal, season/style changes, text localization
 - [youtube-thumbnails.md](examples/youtube-thumbnails.md) - tech review, before/after, tutorial layouts
 - [infographics.md](examples/infographics.md) - timeline, comparison, statistical dashboard
 
-For the complete template library, see [references/prompt-examples.md](references/prompt-examples.md).
+Complete template library: [skills/nano-banana/references/prompt-examples.md](skills/nano-banana/references/prompt-examples.md).
 
 ## Golden Rules
 
-These rules consistently produce better results with Nano Banana 2:
-
-1. **Creative Director, not keyword vomit** - Write full sentences describing a scene, not tag lists like `dog, park, 4k, realistic, sunny`
-2. **Edit, don't re-roll** - If an image is 80% right, ask for specific changes instead of regenerating from scratch
-3. **Explain the logic** - The model understands intent. Say *why*, not just *what*: "as if it were a recipe, with sunlight as an ingredient"
-4. **Specify preservation explicitly** - Always state what must not change during edits with a `KEEP UNCHANGED:` or `CRITICAL:` section
+1. **Creative Director, not keyword vomit** - Write full sentences, not tag lists like `dog, park, 4k, realistic, sunny`
+2. **Edit, don't re-roll** - If an image is 80% right, ask for specific changes instead of regenerating
+3. **Explain the logic** - The model understands intent. Say *why*, not just *what*
+4. **Specify preservation explicitly** - Always state what must not change during edits
 5. **Provide context and purpose** - "For a Brazilian gourmet cookbook" helps the model make better artistic decisions
 6. **Use positive framing** - Describe what you want, not what you don't want
 7. **Specify HEX codes for brand colors** - "background color: #0066CC" is more reliable than "dark blue"
-
-## Model Overview
-
-| Model | Gemini Base | Best For | Speed |
-|---|---|---|---|
-| **Nano Banana 2** | Gemini 3.1 Flash Image | Default - all-purpose, Pro quality + Flash speed | Fast |
-| **Nano Banana Pro** | Gemini 3.1 Pro Preview | Highest-fidelity, most demanding outputs | Slower |
-| Nano Banana (original) | Gemini 2.5 Flash | Quick simple edits | Fastest |
-
-**Default recommendation:** Use Nano Banana 2 for almost everything. Upgrade to Pro only for the most demanding professional outputs. The original Gemini 3 Pro Image was deprecated March 9, 2026.
-
-**Access:** Gemini app, Google Flow, AI Studio, Vertex AI, Gemini API, Gemini CLI
+8. **Match model to task** - thumbnails on Pro = wasted money; production defaults on a Preview model = risk
 
 ## About the Author
 
-Built by [Maciej Dzierżek](https://maciejdzierzek.com) - consultant, trainer and creator from Poland. He specializes in helping businesses implement AI in their day-to-day workflows, and built this skill to solve his own real-world prompting problems with Nano Banana.
+Built by [Maciej Dzierżek](https://maciejdzierzek.com) - consultant, trainer and creator from Poland. Specializes in helping businesses implement AI in day-to-day workflows.
 
 - Website: [maciejdzierzek.com](https://maciejdzierzek.com)
 - All AI tools: [maciejdzierzek.com/narzedzia](https://maciejdzierzek.com/narzedzia)
+- Companion skill (AI video): [kling-ai-prompt-generator](https://github.com/maciejdzierzek/kling-ai-prompt-generator)
 
 ## License
 

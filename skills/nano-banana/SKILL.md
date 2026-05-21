@@ -1,21 +1,26 @@
 ---
 name: nano-banana
-description: This skill should be used when the user wants to generate images, edit photos, design YouTube thumbnails, create infographics, build storyboards, generate Veo video keyframes, or translate text inside images - all using Nano Banana (Google's Gemini image models). Applies to any request involving Nano Banana, Gemini image generation, AI photo editing, AI-generated thumbnails, infographic design, storyboard creation, or multi-character image consistency. Also covers casual requests such as "help me make an image" or "can Gemini edit this photo".
+description: This skill should be used when the user wants to generate images, edit photos, design YouTube thumbnails, create infographics, build storyboards, or translate text inside images using Nano Banana (Google's Gemini image generation models). Applies to any request involving Nano Banana, Nano Banana 2, Nano Banana Pro, Gemini image generation, Gemini 2.5 Flash Image, Gemini 3 Pro Image, Gemini 3.1 Flash Image, AI photo editing, conversational image editing, multi-character consistency (up to 5 characters), multi-object reference compositions (up to 14 reference images), in-image text translation, image search grounding, or photo restoration. Also covers casual requests such as "help me make an image", "generate a thumbnail", or "can Gemini edit this photo".
 ---
 
 # Nano Banana Prompting Guide (2026)
 
-## Model Landscape
+## Model Lineup
 
-Nano Banana is Google's family of AI image generation and editing models built into Gemini.
+Nano Banana is Google's marketing name for the Gemini image generation models. Three models are currently exposed via the Gemini API:
 
-| Model | Gemini Base | Best For | Speed |
-|---|---|---|---|
-| **Nano Banana 2** | Gemini 3.1 Flash Image | Default - all-purpose, Pro quality + Flash speed | Fast |
-| **Nano Banana Pro** (Gemini 3.1 Pro Preview) | Gemini 3.1 Pro | Highest-fidelity, complex reasoning tasks | Slower |
-| Nano Banana (original) | Gemini 2.5 Flash | Simple quick edits | Fastest |
+| Marketing name | Model code | Status | Updated | Best for |
+|---|---|---|---|---|
+| **Nano Banana** | `gemini-2.5-flash-image` | **Stable** | Oct 2025 | High-volume generation, conversational editing, low-latency creative workflows |
+| **Nano Banana 2** | `gemini-3.1-flash-image-preview` | Preview | Feb 2026 | Mainstream-price upgrade with thinking, search grounding, 0.5K-4K output, 14 aspect ratios |
+| **Nano Banana Pro** | `gemini-3-pro-image-preview` | Preview | Nov 2025 | Studio-quality precision, complex graphic design, factual data visualizations, accurate text |
 
-**Default recommendation:** Use Nano Banana 2 for almost everything. Upgrade to Pro only for the most demanding professional outputs.
+**Defaults:**
+- For most production use: **Nano Banana** (`gemini-2.5-flash-image`) - the only stable model.
+- For text rendering, infographics, search-grounded factual imagery, or low-resolution thumbnails (0.5K): **Nano Banana 2** (Preview - features may change before going stable).
+- For high-stakes design work where text accuracy, complex composition, and reasoning matter: **Nano Banana Pro** (Preview, most expensive).
+
+Preview models may change before going stable and have more restrictive rate limits ([source](https://ai.google.dev/gemini-api/docs/pricing)).
 
 ---
 
@@ -24,7 +29,7 @@ Nano Banana is Google's family of AI image generation and editing models built i
 **Generate:** Describe your scene in a full sentence with style and specs:
 ```
 A professional product photo of a black leather wallet on white marble.
-Soft studio lighting, macro lens, shallow depth of field. 4K, 3:2 aspect ratio.
+Soft studio lighting, macro lens, shallow depth of field. 2K, 3:2 aspect ratio.
 ```
 
 **Edit:** Stay in the same conversation and describe only what changes:
@@ -33,23 +38,25 @@ Turn 1: "A red convertible parked on a coastal road at sunset."
 Turn 2: "Change the color to midnight blue."
 Turn 3: "Add surfboards on the roof rack."
 ```
-The model remembers the full visual context - no need to re-describe unchanged elements.
 
-For the full prompt formula, model details, and advanced techniques - read on.
+The model carries the full visual context through the conversation - you describe only what changes, not the entire scene again.
+
+For prompt formulas, model-specific guidance, and advanced techniques - read on.
 
 ---
 
 ## Language of Prompts
 
-Always write Nano Banana prompts in **English**, regardless of the language the user is writing in. The model was trained predominantly on English-language descriptions and produces significantly better results with English prompts.
+Always write Nano Banana prompts in **English**, regardless of the language the user is writing in. The model was trained predominantly on English and produces noticeably better results with English prompts.
 
-The workflow is:
-- Communicate with the user in their language (Polish, German, French, etc.)
-- Write all image generation prompts in English
+Workflow:
+- Talk to the user in their language (Polish, German, French, etc.).
+- Write the final prompt in English.
+- If the user describes what they want in another language, translate to English before presenting the prompt.
 
-If the user describes what they want in Polish or another language, translate it to English before presenting the final prompt they should use. Explain this briefly if it's not obvious.
+Exception: text that should appear **inside the image** (e.g., a Polish poster headline, a Japanese label) stays in the target language. The surrounding prompt instructions stay in English.
 
-Exception: when the explicit goal is to render non-English text *inside the image* (e.g., a Polish poster headline, a Japanese label), that text stays in the target language - but the surrounding prompt instructions remain in English.
+Nano Banana 2 specifically advertises "improved i18n text rendering" ([source](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image-preview)), so non-Latin scripts and accented Latin characters render more reliably than on the original Nano Banana - but the prompt itself still works best in English.
 
 ---
 
@@ -57,7 +64,7 @@ Exception: when the explicit goal is to render non-English text *inside the imag
 
 1. **Creative Director, not keyword vomit** - Write full sentences describing a scene, not tag lists.
 2. **Edit, don't re-roll** - If an image is 80% right, ask for specific changes. Preserve the 80% that works.
-3. **Explain the logic** - Nano Banana 2 is a thinking model. It understands intent. Say *why*, not just *what*: "Create a diagram of photosynthesis as if it were a recipe, with sunlight as an ingredient."
+3. **Explain the logic** - Nano Banana 2 and Pro are thinking models ([Pro spec](https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image-preview)). They reason through intent. Say *why*, not just *what*.
 4. **Specify preservation explicitly** - Always state what must not change during edits.
 5. **Provide context and purpose** - "For a Brazilian gourmet cookbook" helps the model make better artistic decisions.
 6. **Use positive framing** - Describe what you want, not what you don't want.
@@ -66,7 +73,7 @@ Exception: when the explicit goal is to render non-English text *inside the imag
 
 ## Core Prompt Structure (6 Factors)
 
-Every strong Nano Banana prompt covers these six factors:
+Every strong prompt covers these six factors:
 
 ```
 [SUBJECT] - who or what is in the image
@@ -91,7 +98,7 @@ Every strong Nano Banana prompt covers these six factors:
 A stoic robot barista with glowing blue optics preparing an espresso
 in a minimalist Scandinavian cafe. Wide shot, rule of thirds.
 Soft morning light through large windows. Cinematic 3D, photorealistic.
-4K, 16:9, shallow depth of field.
+2K, 16:9, shallow depth of field.
 ```
 
 ### Image Editing Template
@@ -99,23 +106,33 @@ Soft morning light through large windows. Cinematic 3D, photorealistic.
 ```
 [Action verb] + [specific element] + [desired result].
 KEEP UNCHANGED: [list of what must stay the same].
-[Style/quality requirements]. [Technical specs].
+[Style/quality requirements].
 ```
 
-**Action verbs:** Replace, Remove, Add, Change, Transform, Colorize, Translate, Enhance
+**Action verbs:** Replace, Remove, Add, Change, Transform, Colorize, Translate, Enhance, Restore
 
 **Example:**
 ```
 Replace the white top with a black t-shirt.
 KEEP UNCHANGED: face, hairstyle, pose, background, lighting.
-Photorealistic, natural shadows. High resolution, seamless integration.
+Photorealistic, natural shadows. Seamless integration.
 ```
 
 ---
 
-## Reference Images (Role Assignment)
+## Reference Images (Multi-Image Composition)
 
-Nano Banana 2 supports up to 14 reference images with high fidelity for up to 6. Assign each reference a specific role:
+The Gemini 3 image models accept up to **14 reference images** in a single generation ([source](https://ai.google.dev/gemini-api/docs/image-generation#use_up_to_14_reference_images)). Capacity per model:
+
+| Capacity | Nano Banana 2 (`gemini-3.1-flash-image-preview`) | Nano Banana Pro (`gemini-3-pro-image-preview`) |
+|---|---|---|
+| Objects with high-fidelity | up to 10 | up to 6 |
+| Characters with consistency | up to 4 | up to 5 |
+| Total reference images | 14 | 14 |
+
+The original **Nano Banana** (`gemini-2.5-flash-image`) works best with up to **3 input images** ([source](https://ai.google.dev/gemini-api/docs/image-generation), Tips & Tricks section).
+
+### Role-assignment pattern (works for any model):
 
 ```
 Image 1 [CHARACTER/IDENTITY]: Keep this person's face exactly
@@ -130,18 +147,15 @@ Image 5 [ENVIRONMENT/BACKGROUND]: Use this setting
 Combine the subject from Image 1 (keep face identical) with the setting
 from Image 2. Apply the lighting style from Image 3.
 Seamlessly blend all elements, match perspective and shadows.
-Photorealistic. 4K, 3:2 aspect ratio.
+Photorealistic. 2K, 3:2 aspect ratio.
 ```
 
 ---
 
 ## Multi-Character and Object Consistency
 
-Nano Banana 2 can maintain:
-- Up to **5 characters** with visual consistency across a workflow
-- Up to **14 objects** with fidelity in a single generation
+To maintain visual consistency across multiple characters in a single image (group photo, comic panel, storyboard):
 
-### Multi-character prompt pattern:
 ```
 Scene features [CHARACTER A] (tall woman, red coat, short dark hair)
 and [CHARACTER B] (older man, grey beard, blue jacket).
@@ -150,18 +164,25 @@ Keep both characters visually identical to the reference images.
 ```
 
 ### Sequential consistency (storyboarding):
+
+Use conversational editing - stay in the same chat and reference earlier images:
 ```
 Continue this story from the previous image. The main character -
-[detailed description or "same as Image 1"] - is now doing [new action].
+same as Image 1 - is now doing [new action] in [new location].
 KEEP IDENTICAL: character appearance, clothing, hair, distinguishing features.
 CHANGE: [what is different in this scene].
 ```
+
+### 360-degree character view:
+
+Documented in the official guide ([source](https://ai.google.dev/gemini-api/docs/image-generation#character_consistency_360_view)): iteratively prompt for additional angles in the same chat, referencing the first image to maintain consistency. For complex poses, include a reference image of the desired pose.
 
 ---
 
 ## Text Rendering and In-Image Translation
 
 ### Text rendering:
+
 Specify text in quotes, with font style and placement:
 ```
 Create a poster. Main headline: "AUTUMN SPECIAL" in bold gold serif at top.
@@ -170,21 +191,24 @@ Footer: "Offer ends Oct 31" in small clean text at bottom.
 Ensure all text is perfectly spelled, ultra-sharp, high contrast.
 ```
 
-### In-image translation (new in 2026):
-Nano Banana 2 can translate text within existing images while preserving the design:
+Pro and Nano Banana 2 produce noticeably sharper, more reliable text than the original Nano Banana. For dense layouts (menus, infographics, multi-language posters), prefer **Pro**.
+
+### In-image translation:
+
+The official docs demonstrate translating an existing image's text into another language while preserving the design ([source](https://ai.google.dev/gemini-api/docs/image-generation#text_rendering), Spanish infographic example):
 ```
-Translate all [SOURCE LANGUAGE] text in this image to [TARGET LANGUAGE].
-Keep everything identical: layout, colors, images, design elements.
-Match the original font style and weight as closely as possible.
-All translated text must be perfectly legible and properly formatted.
+Update this image to [TARGET LANGUAGE]. Do not change any other
+elements of the image. Match the original font style and weight.
+All translated text must be perfectly legible.
 ```
-Supported for 100+ languages.
+
+The docs do not enumerate a supported language list - verify against the current docs if a specific script matters.
 
 ---
 
 ## Conversational Editing
 
-Iterate naturally in the same conversation. The model remembers the full visual context - you describe only what changes, not the whole scene:
+Iterate naturally in the same chat. The model holds the full visual context, so describe only what changes:
 
 ```
 Turn 1: "A corporate headshot of a woman in a navy suit, white background, studio lighting."
@@ -193,47 +217,49 @@ Turn 3: "Add glasses."
 Turn 4: "Make the lighting warmer, golden hour feel."
 ```
 
-Each edit refines the existing image. Use this instead of starting from scratch when only one element needs changing.
+Use this instead of starting from scratch when one element needs adjusting.
 
 ---
 
-## Search Grounding (Real-World Knowledge)
+## Image Search Grounding (Nano Banana 2 and Pro)
 
-Nano Banana 2 connects to Google Search and Gemini's world knowledge for factually accurate visuals:
+Both Nano Banana 2 and Pro can ground generations on Google Search results - including image search - for factually accurate visuals ([source](https://ai.google.dev/gemini-api/docs/image-generation), Grounding section). Original Nano Banana does **not** support search grounding.
+
+Use cases:
+- Weather charts with current data
+- Diagrams of real-world places (floor plans, maps, building layouts)
+- Reference visuals for products, vehicles, or landmarks the model may not have seen
 
 ```
-Visualize the current weather forecast for Tokyo next 5 days
-as a modern weather chart with temperature values, icons for conditions,
+Visualize the current weather forecast for Tokyo for the next 5 days
+as a modern weather chart with temperature values, condition icons,
 and day labels. Clean professional style, 16:9, 1920x1080px.
 ```
 
-```
-Create an accurate floor plan diagram of a typical Japanese izakaya restaurant.
-Show bar seating, tatami rooms, kitchen area, entrance.
-Labeled in English. Architectural diagram style, clean white background.
-```
+Grounding is billed per search query on top of the image price (5,000/month free across the Gemini 3 family, then $14 / 1,000 queries) - see `references/pricing.md`.
 
 ---
 
-## Video Production Pipeline (Nano Banana + Veo + Lyria)
+## Storyboards for Video Workflows
 
-Nano Banana 2 is the starting point for full AI video production. The four-stage workflow:
+Nano Banana is documented as the starting point for storyboard frames that can be handed to Veo (Google's video model) ([source](https://ai.google.dev/gemini-api/docs/image-generation), "Bonus: Comic strips and storyboards" + link to Veo guide at the end of the page).
 
-**Stage 1 - Storyboard:** Plan scenes with consistent characters and settings in Nano Banana
-**Stage 2 - Keyframe generation:** Create still images for each key moment
-**Stage 3 - Video generation:** Hand keyframes to Veo 3.1 to generate motion between them
-**Stage 4 - Final production:** Add soundtrack via Lyria, edit in Flow
+**Storyboard workflow:**
+1. Generate the first key frame in Nano Banana with full character/scene specification.
+2. Use conversational editing to produce subsequent frames - reference the previous frame for consistency.
+3. Export the frames and use them as image inputs to Veo for motion generation.
 
-### Keyframe prompt for Veo handoff:
+**Frame prompt template:**
 ```
-Create a keyframe for an animation scene.
-[Subject description with all consistency details]
-doing [specific action], in [setting].
+Storyboard frame [N of total]. [Subject description with all consistency details]
+doing [specific action] in [setting].
 [Precise camera angle and framing - e.g. "low angle, wide shot"].
-[Lighting that works for animation, e.g. "soft even diffuse light"].
-Style: [art direction consistent with other keyframes].
-This will be used as a Veo animation keyframe - ensure clear foreground/background separation.
+[Lighting suitable for video, e.g. "soft even diffuse light"].
+Style: [art direction consistent with other frames].
+Clear foreground/background separation.
 ```
+
+Veo motion-from-keyframes specifics are out of scope for this skill - see the official [Veo guide](https://ai.google.dev/gemini-api/docs/video) for the handoff details.
 
 ---
 
@@ -246,11 +272,11 @@ This will be used as a Veo animation keyframe - ensure clear foreground/backgrou
 ```
 
 ### Key principles:
-- **High contrast** - minimum 30% contrast between elements for mobile visibility
-- **Bold text** - max 3-5 words, 36pt+ minimum, thick fonts with outline or shadow
-- **Strong emotion** - excited, surprised expressions increase CTR 20-30%
-- **Rule of thirds** - face left, product right
-- **Avoid bottom-right** - YouTube timestamp covers this area
+- **High contrast** - mobile-readable, minimum 30% contrast between elements.
+- **Bold text** - 3-5 words max, large bold sans-serif with outline or shadow. Use Pro or Nano Banana 2 for text accuracy.
+- **Strong emotion** - excited/surprised expressions tend to increase CTR.
+- **Rule of thirds** - face on one side, product/text on the other.
+- **Avoid bottom-right** - YouTube timestamp overlay covers this area.
 
 ### Example:
 ```
@@ -265,14 +291,18 @@ COMPOSITION: Rule of thirds, visual flow from face to product to text
 TECHNICAL: 1280x720px, 16:9, high saturation, mobile-optimized
 ```
 
+Set output to **1K** (or 0.5K on Nano Banana 2) for thumbnails - 2K/4K is overkill for YouTube's 1280x720 spec and costs more.
+
 ---
 
 ## Infographics
 
-### Best types for Nano Banana 2:
+Pro is best for infographics because of text accuracy and Search Grounding for factual data. Nano Banana 2 also works.
+
+### Best types:
 - Timeline infographics
 - Comparison charts (side-by-side)
-- Process/How-to diagrams
+- Process / How-to diagrams
 - Statistical KPI cards
 - Educational concept diagrams
 
@@ -295,18 +325,70 @@ TECHNICAL: [resolution], [aspect ratio], high contrast, all text ultra-sharp
 STYLE NOTE: Flat design, clean lines. Avoid drop shadows, 3D effects, and gradients on charts.
 ```
 
+For data-grounded infographics (e.g., "show GDP growth of top-5 economies last quarter"), enable Search Grounding by using Nano Banana 2 or Pro and including a phrase like "use real, current data".
+
 ---
 
-## Technical Specs (Nano Banana 2)
+## Technical Specs
 
-| Parameter | Value |
+### Resolutions (output)
+
+| Model | 0.5K (512px) | 1K | 2K | 4K |
+|---|---|---|---|---|
+| `gemini-2.5-flash-image` | - | ✅ (up to 1024x1024) | - | - |
+| `gemini-3.1-flash-image-preview` | ✅ | ✅ | ✅ | ✅ |
+| `gemini-3-pro-image-preview` | - | ✅ | ✅ | ✅ |
+
+Sources: [3.1 Flash spec](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image-preview), [pricing footnotes](https://ai.google.dev/gemini-api/docs/pricing).
+
+### Aspect ratios (Nano Banana 2 and Pro)
+
+`1:1`, `1:4`, `1:8`, `2:3`, `3:2`, `3:4`, `4:1`, `4:3`, `4:5`, `5:4`, `8:1`, `9:16`, `16:9`, `21:9`
+
+Nano Banana 2 added the extreme ratios `1:4`, `4:1`, `1:8`, `8:1` ([source](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image-preview)).
+
+### Watermarking
+
+All generated images carry a **SynthID** watermark ([source](https://ai.google.dev/responsible/docs/safeguards/synthid)). The official Gemini API image-generation docs do not mention C2PA Content Credentials - if you need C2PA for a compliance reason, verify against the latest docs before promising it.
+
+### Capabilities matrix
+
+| Capability | Nano Banana (2.5) | Nano Banana 2 (3.1) | Nano Banana Pro (3 Pro) |
+|---|---|---|---|
+| Image generation | ✅ | ✅ | ✅ |
+| Conversational editing | ✅ | ✅ | ✅ |
+| Thinking | ❌ | ✅ | ✅ |
+| Search grounding (web) | ❌ | ✅ | ✅ |
+| Search grounding (image) | ❌ | ✅ | ✅ |
+| Batch API | ✅ | ✅ | ✅ |
+| Context caching | ✅ | ❌ | ❌ |
+| Structured outputs | ✅ | ❌ | ✅ |
+
+Sources: per-model spec pages linked at end.
+
+### Access points
+
+- **Gemini API** (`generativelanguage.googleapis.com`) - direct programmatic access
+- **Google AI Studio** (aistudio.google.com) - free interactive playground for all three models
+- **Vertex AI** - enterprise deployment
+
+Consumer surfaces (Gemini app, Google AI Studio) are out of scope for API prompt-writing but use the same underlying models.
+
+---
+
+## Pricing (snapshot)
+
+Detailed pricing in `references/pricing.md`. Headline numbers ([source](https://ai.google.dev/gemini-api/docs/pricing), verified 2026-05-21):
+
+| Model | Per-image output (Standard, paid tier) |
 |---|---|
-| Max reference images | 14 (6 with high fidelity) |
-| Resolutions | 512px, 1K, 2K, 4K |
-| Aspect ratios | 1:1, 3:2, 16:9, 21:9 |
-| Input formats | PNG, JPEG, WebP, HEIC, HEIF |
-| Watermarking | SynthID + C2PA Content Credentials |
-| Access | Gemini app, Flow, AI Studio, Vertex AI, Gemini API, Gemini CLI |
+| `gemini-2.5-flash-image` | $0.039 (up to 1024x1024) |
+| `gemini-3.1-flash-image-preview` | $0.045 (0.5K), $0.067 (1K), $0.101 (2K), $0.151 (4K) |
+| `gemini-3-pro-image-preview` | $0.134 (1K-2K), $0.24 (4K) |
+
+**No free tier for image generation models.** Free Tier shows "Not available" for all three. The free Google AI Studio playground exists but counts against per-account quotas, not a billing-free image quota.
+
+**Batch API** halves the per-image cost on all three models.
 
 ---
 
@@ -314,13 +396,16 @@ STYLE NOTE: Flat design, clean lines. Avoid drop shadows, 3D effects, and gradie
 
 | Problem | Solution |
 |---|---|
-| Text blurry or misspelled | Add: "All text ultra-sharp, perfectly spelled, high resolution" |
+| Text blurry or misspelled | Switch to Nano Banana 2 or Pro. Add: "All text ultra-sharp, perfectly spelled, high resolution" |
 | Face changes during edit | Add: "KEEP UNCHANGED: face must be 100% identical to original" |
 | Colors don't match brand | Use HEX codes: "background color: #0066CC" |
 | Composition shifts | Add: "Preserve exact composition, framing, and layout" |
 | Inconsistent style | Specify one dominant style: "Professional photography ONLY. No filters." |
 | Character drifts across images | Supply reference image + "Character appearance is LOCKED to Image 1" |
 | Translation looks wrong | Add: "Match original font weight, match text box size, do not rearrange layout" |
+| Need accurate factual visual | Use Nano Banana 2 or Pro with "use real, current data" - triggers Search Grounding |
+| 4K image too expensive | Generate at 2K, upscale offline; or use Batch API for 50% discount |
+| Need PNG output | Save the returned bytes locally with `.png` extension - models return image bytes, not URLs |
 
 ---
 
@@ -329,11 +414,13 @@ STYLE NOTE: Flat design, clean lines. Avoid drop shadows, 3D effects, and gradie
 - **Tag soup**: `dog, park, 4k, realistic, sunny, professional`
 - **Vague descriptions**: "nice image", "good quality", "make it better"
 - **Cliche boosts**: "trending on artstation, masterpiece, 8k ultra" - the model ignores these
-- **Re-rolling from scratch** when 80% is already right
+- **Re-rolling from scratch** when 80% is already right - edit conversationally instead
 - **Missing preservation instructions** during edits
 - **Mixing conflicting styles** in one prompt
 - **Over-prompting** - 500+ word prompts confuse rather than clarify
 - **Celebrity names** - use descriptive attributes instead ("woman with sharp cheekbones and red hair")
+- **Picking Pro for thumbnails** - Pro is for high-fidelity work; thumbnails don't need it and pay 3-4x more per image
+- **Treating Preview models as stable** - Nano Banana 2 and Pro are Preview and may change without notice
 
 ---
 
@@ -346,13 +433,31 @@ STYLE NOTE: Flat design, clean lines. Avoid drop shadows, 3D effects, and gradie
 - Technical specs (resolution, aspect ratio)
 - What to preserve (for edits)
 
-**Model strengths (Nano Banana 2):**
-- Text rendering in 100+ languages + in-image translation
-- Multi-character consistency (up to 5 characters)
-- Complex multi-reference compositions (up to 14 objects)
-- Real-time world knowledge and Search grounding
-- Conversational iterative editing
-- Native 4K output
-- Storyboard and video production pipelines (with Veo + Lyria)
+**Model picks:**
+- High-volume / conversational editing / lowest cost → **Nano Banana** (`gemini-2.5-flash-image`)
+- Thumbnails with text / 0.5K-4K output / current-data infographics → **Nano Banana 2** (`gemini-3.1-flash-image-preview`)
+- Studio-quality design / dense text / professional infographics → **Nano Banana Pro** (`gemini-3-pro-image-preview`)
 
-For ready-to-use prompts by category, see `references/prompt-examples.md`.
+For ready-to-use prompts by category, see `references/prompt-examples.md`. For pricing breakdown by tier (Standard, Batch, Flex, Priority), see `references/pricing.md`.
+
+---
+
+## Verification & Sources
+
+Every numeric claim, model ID, capability flag, and price in this skill is sourced from Google's official Gemini API docs at `ai.google.dev/gemini-api/docs`, verified on **2026-05-21**.
+
+- **Image generation guide**: https://ai.google.dev/gemini-api/docs/image-generation
+- **Nano Banana spec** (`gemini-2.5-flash-image`): https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image
+- **Nano Banana 2 spec** (`gemini-3.1-flash-image-preview`): https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image-preview
+- **Nano Banana Pro spec** (`gemini-3-pro-image-preview`): https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image-preview
+- **Pricing page**: https://ai.google.dev/gemini-api/docs/pricing
+- **SynthID watermark**: https://ai.google.dev/responsible/docs/safeguards/synthid
+- **Veo handoff** (storyboards): https://ai.google.dev/gemini-api/docs/video
+
+Things this skill **does not** claim because the official docs do not confirm them:
+- A specific "100+ languages" count for text rendering or translation - docs do not enumerate.
+- C2PA Content Credentials - only SynthID is mentioned in image-generation docs.
+- A formal "Veo + Lyria + Flow 4-stage pipeline" - docs only link to the Veo guide; the rest is third-party narrative.
+- Default model claims for the consumer Gemini app - this skill targets the API.
+
+If you discover a claim above is wrong, the fix is to update both this section and the relevant body section with the corrected fact and its source URL.

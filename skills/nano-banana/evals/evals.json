@@ -1,0 +1,95 @@
+{
+  "skill": "nano-banana",
+  "description": "Trigger accuracy evaluation for the nano-banana skill. Each entry is a user prompt that should or should not trigger this skill. Used with the skill-creator eval framework.",
+  "version": "1.0",
+  "should_trigger": [
+    {
+      "query": "Generate me an infographic about renewable energy with bar charts.",
+      "why": "Infographic generation - canonical Nano Banana use case (especially Pro for text accuracy)."
+    },
+    {
+      "query": "Edit this photo to remove the background and keep only the person.",
+      "why": "Photo editing with preservation - core conversational-editing skill."
+    },
+    {
+      "query": "Create a YouTube thumbnail with my face on the left and the title 'How AI Works' in big bold letters.",
+      "why": "YouTube thumbnail design - documented use case, has its own section."
+    },
+    {
+      "query": "I have a storyboard of 6 frames - help me generate consistent images with the same main character.",
+      "why": "Multi-character consistency + storyboard - documented capability."
+    },
+    {
+      "query": "Translate the Polish text in this product photo to English while keeping the design intact.",
+      "why": "In-image translation - documented Gemini feature."
+    },
+    {
+      "query": "Stworz mi grafike inforgraficzna o sprzedazy w 2025.",
+      "why": "Polish phrasing for infographic - skill handles Polish input, English prompt output."
+    },
+    {
+      "query": "Pomoz mi zrobic obrazek na landing page produktu.",
+      "why": "Polish casual landing-page image request - canonical trigger."
+    },
+    {
+      "query": "What's the difference between Nano Banana 2 and Nano Banana Pro?",
+      "why": "Model selection question - skill has a Model Lineup section covering this."
+    },
+    {
+      "query": "How much does it cost to generate a 4K image with Gemini?",
+      "why": "Pricing question - skill includes references/pricing.md with per-tier costs."
+    },
+    {
+      "query": "My generated image has misspelled text. How do I fix this?",
+      "why": "Troubleshooting - covered in Common Issues table (switch to Pro/NB2, add 'all text ultra-sharp')."
+    },
+    {
+      "query": "Restore this old damaged photo of my grandparents.",
+      "why": "Photo restoration - editing use case, action verb 'Restore' listed in editing template."
+    },
+    {
+      "query": "Generate a product mockup of a wine bottle on marble with soft lighting.",
+      "why": "Product photography prompt - covered in prompt-examples.md."
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "query": "Generate a video from this script about a cat learning to skateboard.",
+      "why": "Video generation - this is Kling/Veo territory, not image generation."
+    },
+    {
+      "query": "Animate this character so they walk across the screen.",
+      "why": "Animation = video, not still image generation."
+    },
+    {
+      "query": "Write me ad copy for a wine subscription service.",
+      "why": "Text generation, not image generation."
+    },
+    {
+      "query": "Design a logo for me in Figma and export it as SVG.",
+      "why": "Vector/manual tool work - Nano Banana outputs raster only."
+    },
+    {
+      "query": "How do I install Photoshop on macOS?",
+      "why": "Tool installation question, not image generation."
+    },
+    {
+      "query": "Recommend good stock photo sites for commercial use.",
+      "why": "Stock photo discovery, not AI generation."
+    },
+    {
+      "query": "Make a PowerPoint presentation about quarterly sales.",
+      "why": "Presentation/slides task - not image generation. Even if slides contain images, the deliverable is .pptx."
+    }
+  ],
+  "edge_cases": [
+    {
+      "query": "Make me an image for a Slack GIF.",
+      "why": "Could match slack-gif-creator (animated GIF) instead. Nano Banana generates stills, so should NOT trigger if user wants animation. Should trigger if user clarifies they want a still."
+    },
+    {
+      "query": "Generate a poster.",
+      "why": "Could match canvas-design (PDF posters with design philosophy) or nano-banana (AI-generated poster image). Trigger when context indicates AI image generation specifically (e.g., 'AI poster', 'Gemini poster'). Otherwise defer to canvas-design for designed posters."
+    }
+  ]
+}
