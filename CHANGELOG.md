@@ -4,6 +4,43 @@ All notable changes to the Nano Banana Prompt Generator skill and plugin are doc
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-08-05
+
+Maintenance audit against Google's official Gemini API docs (`ai.google.dev/gemini-api/docs`, fetched from the canonical `.md.txt` sources on 2026-08-04). **This is a correctness-critical release: the model IDs shipped in v1.1.0 have been shut down by Google.**
+
+### Fixed
+
+- **Dead model IDs removed.** `gemini-3.1-flash-image-preview` and `gemini-3-pro-image-preview` - both recommended by v1.1.0 - were **shut down on 2026-06-25**. Replaced with the GA IDs `gemini-3.1-flash-image` and `gemini-3-pro-image` (both GA 2026-05-28). A skill that emits a shut-down model ID produces a 404 for the user; this was the reason for the audit.
+- **Default model recommendation reversed.** v1.1.0 recommended `gemini-2.5-flash-image` as "the only stable model" and the production default. That model is now **deprecated with shutdown on 2026-10-02**, and Google's own guidance is to migrate off it. The default is now Nano Banana 2 (`gemini-3.1-flash-image`), matching Google's "should be your go-to image generation model" wording in the image-generation guide.
+- **"Preview" framing dropped throughout.** All four models are Stable/GA; the caveats about preview instability and restrictive preview rate limits no longer apply.
+- **C2PA claim corrected.** v1.1.0 stated the docs never mention C2PA. Nano Banana 2 Lite's model card explicitly lists "SynthID (Always On) + C2PA". The claim is now per-model instead of blanket-denied.
+- **Pro reference-image capacity corrected** from "up to 6 objects high-fidelity" to the documented 5, and the invented per-character count for Pro removed (Google does not publish one).
+- **Text-rendering language claim replaced with the official list.** v1.1.0 said the docs do not enumerate languages. They now do: 15 best-performance locales. **Polish is not among them** - the skill states this plainly and gives the proof-render / text-layer-in-post fallback, which matters for Polish-language deliverables.
+
+### Added
+
+- **Fourth model: Nano Banana 2 Lite** (`gemini-3.1-flash-lite-image`, GA 2026-06-30) - sub-2s latency, cheapest per image ($0.0336 at 1K Standard, ~$0.017 Batch), 1K only, 10 aspect ratios, function calling supported, no search grounding, explicitly not optimised for multiple references or long multi-turn edit chains.
+- **Video-to-image section** - `gemini-3.1-flash-image` accepts a public YouTube URL or an uploaded video file as multimodal context and generates a still from it (launched 2026-05-28, exclusive to this model). Includes thumbnail / poster / summary-infographic prompt patterns and the caveat that output is synthesised art direction, not a frame extraction.
+- **Two-step text workflow** from the official best-practices list: generate the copy in one turn, then ask for the image with that copy - instead of one shot.
+- **Deprecation timeline table** in "Verification & Sources": GA dates, `-preview` shutdown, Lite GA, sampling-parameter deprecation, Imagen shutdown, legacy 2.5 shutdown. Gives the next audit a dated baseline.
+- **`response_format` mechanics** - `aspect_ratio` and `image_size` are parameters, not prose. Documented with the note that stating "16:9" in prompt text does not set the canvas.
+- **Grounding limitation** - on Nano Banana 2, Search grounding does not support real-world images of people from web search.
+- **Exact pixel dimensions** for common 1K ratios on Nano Banana 2 (16:9 = 1376x768, 9:16 = 768x1376, 4:5 = 928x1152, 1:1 = 1024x1024).
+- **4 new eval cases** covering video-to-image, model/cost selection, the 404-on-preview-ID scenario, and Polish diacritics.
+
+### Changed
+
+- **Frontmatter split into `description` + `when_to_use`** (the `when_to_use` field is now supported and is appended to `description` in the skill listing, sharing a 1,536-character cap). Trigger phrases and model codes moved out of `description`, which now states what the skill does. Combined length 1,019 characters.
+- **Capability matrix rebuilt as four columns** and extended with video input, multi-reference capacity, function calling, Flex/Priority availability, and token limits, all from the per-model cards.
+- **Resolution and aspect-ratio tables** now per-model (Lite is 1K-only; the extreme banner ratios `1:4`/`4:1`/`1:8`/`8:1` are exclusive to Nano Banana 2).
+- **`references/pricing.md` rewritten** for four models across Standard / Batch / Flex / Priority, with the note that Flex and Priority are unavailable on Nano Banana 2 and that legacy 2.5 costs more than Lite for a worse result.
+- **Sampling parameters** - noted `temperature`, `top_p`, `top_k` were deprecated API-wide on 2026-07-21, so prompt advice must not lean on them.
+- **Access points** - the image docs are now written against the Interactions API (`client.interactions.create`, `response_format`) rather than `generate_content`.
+
+### Source verification notes
+
+Every fact above traces to one of: the image-generation guide, the four model cards, the pricing page, the API changelog, or the deprecations page - all on `ai.google.dev`, fetched 2026-08-04 as raw markdown. No third-party reviews were used. Where Google does not publish a number (Pro character count, total supported language count, C2PA on models other than Lite), the skill says so instead of estimating.
+
 ## [1.1.0] - 2026-05-21
 
 This release was rewritten against Google's **official Gemini API documentation** at [ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs), fetched via `curl` directly from the canonical markdown sources on 2026-05-21. The earlier draft relied on third-party reviews and contained factual errors corrected below. All facts in this entry are sourced from official Google pages - URLs cited in `SKILL.md` "Verification & Sources" section.

@@ -1,7 +1,7 @@
 {
   "skill": "nano-banana",
   "description": "Trigger accuracy evaluation for the nano-banana skill. Each entry is a user prompt that should or should not trigger this skill. Used with the skill-creator eval framework.",
-  "version": "1.0",
+  "version": "1.1",
   "should_trigger": [
     {
       "query": "Generate me an infographic about renewable energy with bar charts.",
@@ -50,6 +50,22 @@
     {
       "query": "Generate a product mockup of a wine bottle on marble with soft lighting.",
       "why": "Product photography prompt - covered in prompt-examples.md."
+    },
+    {
+      "query": "Make a thumbnail for this YouTube video: https://www.youtube.com/watch?v=abc123",
+      "why": "Video-to-image on gemini-3.1-flash-image - the only model taking video input. Documented capability."
+    },
+    {
+      "query": "Which Nano Banana model should I use for generating 500 card images cheaply?",
+      "why": "Model selection / cost question - the skill carries the four-model lineup and per-image pricing."
+    },
+    {
+      "query": "My Gemini image call returns 404 for gemini-3.1-flash-image-preview, what changed?",
+      "why": "Deprecated preview ID shut down 2026-06-25 - skill documents the live IDs and shutdown dates."
+    },
+    {
+      "query": "Will Nano Banana render Polish text with the diacritics correct on a poster?",
+      "why": "i18n text rendering - skill carries the official best-performance language list and the fallback strategy."
     }
   ],
   "should_not_trigger": [

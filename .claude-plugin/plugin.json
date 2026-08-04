@@ -1,7 +1,7 @@
 {
   "name": "nano-banana-prompt-generator",
-  "description": "Generate professional Nano Banana / Gemini image generation prompts. Covers Nano Banana (gemini-2.5-flash-image), Nano Banana 2 (gemini-3.1-flash-image-preview), Nano Banana Pro (gemini-3-pro-image-preview), conversational editing, multi-character consistency, in-image translation, image search grounding, YouTube thumbnails, infographics, and Veo storyboard handoff.",
-  "version": "1.1.0",
+  "description": "Write and improve prompts for Nano Banana - Google's Gemini image generation models. Covers Nano Banana 2 (gemini-3.1-flash-image), Nano Banana 2 Lite (gemini-3.1-flash-lite-image), Nano Banana Pro (gemini-3-pro-image) and the deprecated legacy gemini-2.5-flash-image, plus conversational editing, up to 14 reference images, video-to-image, in-image translation, search grounding, YouTube thumbnails and infographics.",
+  "version": "1.2.0",
   "author": {
     "name": "Maciej Dzierżek",
     "url": "https://maciejdzierzek.com"

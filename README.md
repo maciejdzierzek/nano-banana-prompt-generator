@@ -14,13 +14,16 @@ A skill for Claude that helps you write effective prompts for Nano Banana - Goog
 
 Works with **Claude.ai** (web), **Claude Desktop**, and **Claude Code** - all three support the same skill format.
 
-The skill covers all three current Gemini image models:
+The skill covers all four current Gemini image models:
 
-| Marketing name | Model code | Status |
-|---|---|---|
-| **Nano Banana** | `gemini-2.5-flash-image` | Stable |
-| **Nano Banana 2** | `gemini-3.1-flash-image-preview` | Preview |
-| **Nano Banana Pro** | `gemini-3-pro-image-preview` | Preview |
+| Marketing name | Model code | Status | Niche |
+|---|---|---|---|
+| **Nano Banana 2** | `gemini-3.1-flash-image` | Stable (GA 2026-05-28) | Default for everything; only model with video input |
+| **Nano Banana 2 Lite** | `gemini-3.1-flash-lite-image` | Stable (GA 2026-06-30) | Sub-2s latency, cheapest per image, 1K only |
+| **Nano Banana Pro** | `gemini-3-pro-image` | Stable (GA 2026-05-28) | Studio-quality precision, dense accurate text |
+| **Nano Banana** (legacy) | `gemini-2.5-flash-image` | ⚠️ Shutdown 2026-10-02 | Migrate off it |
+
+> **Heads-up if you installed v1.1.0:** the `-preview` model IDs it recommended were shut down by Google on 2026-06-25, and the model it set as the production default is being shut down on 2026-10-02. v1.2.0 fixes both. Update the skill.
 
 Every model spec, capability, and price in this skill is verified against [ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs). See `SKILL.md` "Verification & Sources" for the full URL list.
 
@@ -29,12 +32,14 @@ Every model spec, capability, and price in this skill is verified against [ai.go
 ## Features
 
 - **5 generation modes:** Image Generation, Photo Editing, YouTube Thumbnails, Infographics, Storyboards
-- Per-model guidance: choose between Stable (Nano Banana) and Preview (NB2, Pro) based on the task
+- Per-model guidance across all four models, including when Lite is the wrong choice
 - Conversational editing patterns - refine iteratively without re-rolling
-- Multi-character consistency - up to 5 characters (Pro) or 4 (NB2) with documented limits
+- Multi-character consistency - up to 4 characters (NB2) with documented per-model limits
 - Multi-reference compositions - up to 14 reference images with role assignment
 - In-image text translation - preserve design while changing language
 - Image Search Grounding - pull real, current data into infographics (NB2 and Pro)
+- Video-to-image - generate a thumbnail or poster straight from a YouTube URL (NB2 only)
+- Official language list for in-image text, and the fallback when your language is not on it (Polish is not)
 - Storyboard frames for Veo handoff - prompt patterns for video-pipeline workflows
 - Verified pricing reference - per-tier (Standard / Batch / Flex / Priority) costs
 - Trigger accuracy eval suite for the skill-creator framework
@@ -118,9 +123,10 @@ walking through a forest as the seasons change. Keyframes for Veo handoff.
 
 | Use case | Recommended model | Why |
 |---|---|---|
-| High-volume generation, conversational editing, lowest cost | Nano Banana | Stable, $0.039 / image, mature |
-| Thumbnails with text, current-data infographics, 0.5K-4K range | Nano Banana 2 | Adds thinking, search grounding, 14 aspect ratios, 0.5K resolution |
-| Studio-quality work, dense text, professional infographics | Nano Banana Pro | Highest fidelity, 5-character consistency, search-grounded, 3-4x more expensive |
+| Anything, unless a reason says otherwise | Nano Banana 2 | Google's own go-to pick: 0.5K-4K, web + image grounding, 14 ratios, up to 14 references |
+| Thumbnail or poster from a finished video | Nano Banana 2 | The only model that accepts video input |
+| Bulk runs, interactive edit loops, tightest budget | Nano Banana 2 Lite | Sub-2s latency, $0.0336 / image at 1K (~$0.017 Batch). 1K only, no grounding |
+| Studio-quality work, dense accurate text, brand precision | Nano Banana Pro | Highest fidelity, search-grounded, Thinking on by default, ~2x Nano Banana 2 |
 
 Pricing details: see `skills/nano-banana/references/pricing.md`.
 
@@ -193,7 +199,8 @@ Complete template library: [skills/nano-banana/references/prompt-examples.md](sk
 5. **Provide context and purpose** - "For a Brazilian gourmet cookbook" helps the model make better artistic decisions
 6. **Use positive framing** - Describe what you want, not what you don't want
 7. **Specify HEX codes for brand colors** - "background color: #0066CC" is more reliable than "dark blue"
-8. **Match model to task** - thumbnails on Pro = wasted money; production defaults on a Preview model = risk
+8. **Match model to task** - thumbnails on Pro = wasted money; many references or grounded facts on Lite = wrong tool
+9. **Never paste a `-preview` model ID** - all of them are shut down; four live IDs only
 
 ## About the Author
 
