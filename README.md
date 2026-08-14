@@ -4,7 +4,7 @@
 > Works with Claude.ai, Claude Desktop, and Claude Code.
 > Supports Image Generation, Photo Editing, YouTube Thumbnails, Infographics, Storyboards.
 
-[![Live Generator](https://img.shields.io/badge/Live_Generator-maciejdzierzek.com-blue)](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
+[![Live Generator](https://img.shields.io/badge/Live_Generator-maciejdzierzek.com-blue)](https://maciejdzierzek.com/narzedzia/generator-promptow/?model=nano-banana)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-orange)](https://claude.ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -27,7 +27,7 @@ The skill covers all four current Gemini image models:
 
 Every model spec, capability, and price in this skill is verified against [ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs). See `SKILL.md` "Verification & Sources" for the full URL list.
 
-**Try the interactive web generator (no install):** [maciejdzierzek.com/narzedzia/generator-nano-banana](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
+**Try the interactive web generator (no install):** [maciejdzierzek.com/narzedzia/generator-promptow](https://maciejdzierzek.com/narzedzia/generator-promptow/?model=nano-banana)
 
 ## Features
 
@@ -84,7 +84,7 @@ Reload Claude Code. The skill activates automatically.
 
 ### Interactive web generator (no installation)
 
-Use directly at: [maciejdzierzek.com/narzedzia/generator-nano-banana](https://maciejdzierzek.com/narzedzia/generator-nano-banana)
+Use directly at: [maciejdzierzek.com/narzedzia/generator-promptow](https://maciejdzierzek.com/narzedzia/generator-promptow/?model=nano-banana)
 No API key, no registration, no data sent to servers. Works in your browser.
 
 ## Usage
@@ -209,7 +209,7 @@ Complete template library: [skills/nano-banana/references/prompt-examples.md](sk
 Built by [Maciej Dzierżek](https://maciejdzierzek.com) - consultant, trainer and creator from Poland. Specializes in helping businesses implement AI in day-to-day workflows.
 
 - Website: [maciejdzierzek.com](https://maciejdzierzek.com)
-- All AI tools: [maciejdzierzek.com/narzedzia](https://maciejdzierzek.com/narzedzia)
+- All AI tools: [maciejdzierzek.com/narzedzia](https://maciejdzierzek.com/narzedzia/)
 - Companion skill (AI video): [kling-ai-prompt-generator](https://github.com/maciejdzierzek/kling-ai-prompt-generator)
 
 ## License
