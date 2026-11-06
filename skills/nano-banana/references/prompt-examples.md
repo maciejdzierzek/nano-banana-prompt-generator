@@ -1,7 +1,7 @@
-# Nano Banana 2 - Prompt Examples by Category (Updated 2026)
+# Nano Banana - Prompt Examples by Category (Updated 2026-11)
 
 Ready-to-use prompts organized by use case. Customize bracketed elements for your needs.
-Works with Nano Banana 2 (Gemini 3.1 Flash Image) as the default model.
+Works with Nano Banana 2.1 (`gemini-nano-banana-2.1`) as the default model.
 
 ## Product Photography
 
@@ -201,7 +201,7 @@ Professional design touch, cohesive collection.
 Generate images one at a time.
 ```
 
-## Storyboard/Sequential (Multi-Character, Nano Banana 2)
+## Storyboard/Sequential (Multi-Character, Nano Banana 2.1)
 
 ### Single-character story arc:
 ```
@@ -213,7 +213,7 @@ Each image in 16:9 landscape format.
 Generate one image at a time, maintaining character consistency throughout.
 ```
 
-### Multi-character scene (up to 5 characters):
+### Multi-character scene (up to 4 characters on Nano Banana 2.1, 5 on Pro):
 ```
 Scene featuring:
 - CHARACTER A: [detailed description - age, hair color, clothing]
@@ -224,7 +224,7 @@ Scene: [what they are doing, setting, action].
 Format: 16:9, 4K.
 ```
 
-### Keyframe for Veo video pipeline:
+### Keyframe for a video pipeline:
 ```
 Create a keyframe for an animated scene.
 SUBJECT: [Character description, same as previous keyframes].
@@ -233,7 +233,7 @@ SETTING: [location description, same environment as keyframe series].
 CAMERA: [e.g. "medium shot, slight low angle"].
 LIGHTING: Soft diffuse lighting, even exposure, no harsh shadows.
 STYLE: [art direction to stay consistent across all keyframes].
-PURPOSE: Veo animation keyframe - ensure clear subject-background separation,
+PURPOSE: video animation keyframe - ensure clear subject-background separation,
 clean edges on all moving elements.
 Format: 16:9, 1920x1080px.
 ```
@@ -293,6 +293,16 @@ from [SOURCE LANGUAGE] to [TARGET LANGUAGE].
 Keep all other text in the original language.
 Keep everything else unchanged: layout, colors, all other text, imagery.
 Match font style as closely as possible.
+```
+
+## Wide Banners (Nano Banana 2.1 only among current models)
+
+Set `aspect_ratio` to `4:1`, `8:1`, `1:4` or `1:8` in `response_format`. At 1K an `8:1` banner is 3072x384.
+
+```
+Website header banner for [BRAND], a single continuous panoramic scene of [SCENE].
+Keep the main subject in the left third and leave the right two thirds calm and uncluttered
+for a text overlay added later. [LIGHTING]. [STYLE].
 ```
 
 ## Viral/Meme Formats

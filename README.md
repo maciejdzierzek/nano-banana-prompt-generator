@@ -18,8 +18,9 @@ The skill covers all four current Gemini image models:
 
 | Marketing name | Model code | Status | Niche |
 |---|---|---|---|
-| **Nano Banana 2** | `gemini-3.1-flash-image` | Stable (GA 2026-05-28) | Default for everything; only model with video input |
-| **Nano Banana 2 Lite** | `gemini-3.1-flash-lite-image` | Stable (GA 2026-06-30) | Sub-2s latency, cheapest per image, 1K only |
+| **Nano Banana 2.1** | `gemini-nano-banana-2.1` | Stable (GA 2026-10-06) | Default for everything; banners up to 8:1 |
+| **Nano Banana 2** | `gemini-3.1-flash-image` | Deprecated, no shutdown date | Migrate to 2.1 |
+| **Nano Banana 2 Lite** | `gemini-3.1-flash-lite-image` | Stable (GA 2026-06-30) | Sub-2s latency, lowest input cost, same 1K image price as 2.1, 1K only |
 | **Nano Banana Pro** | `gemini-3-pro-image` | Stable (GA 2026-05-28) | Studio-quality precision, dense accurate text |
 | **Nano Banana** (legacy) | `gemini-2.5-flash-image` | ⚠️ Shutdown 2026-10-02 | Migrate off it |
 
@@ -32,7 +33,7 @@ Every model spec, capability, and price in this skill is verified against [ai.go
 ## Features
 
 - **5 generation modes:** Image Generation, Photo Editing, YouTube Thumbnails, Infographics, Storyboards
-- Per-model guidance across all four models, including when Lite is the wrong choice
+- Per-model guidance across all five models, including when Lite is the wrong choice
 - Conversational editing patterns - refine iteratively without re-rolling
 - Multi-character consistency - up to 4 characters (NB2) with documented per-model limits
 - Multi-reference compositions - up to 14 reference images with role assignment
@@ -125,8 +126,8 @@ walking through a forest as the seasons change. Keyframes for Veo handoff.
 
 | Use case | Recommended model | Why |
 |---|---|---|
-| Anything, unless a reason says otherwise | Nano Banana 2 | Google's own go-to pick: 0.5K-4K, web + image grounding, 14 ratios, up to 14 references |
-| Thumbnail or poster from a finished video | Nano Banana 2 | The only model that accepts video input |
+| Anything, unless a reason says otherwise | Nano Banana 2.1 | Google's own go-to pick: 1K-4K, web + image grounding, 14 ratios, up to 14 references |
+| Thumbnail or poster from a finished video | Nano Banana 2.1 | Accepts video input |
 | Bulk runs, interactive edit loops, tightest budget | Nano Banana 2 Lite | Sub-2s latency, $0.0336 / image at 1K (~$0.017 Batch). 1K only, no grounding |
 | Studio-quality work, dense accurate text, brand precision | Nano Banana Pro | Highest fidelity, search-grounded, Thinking on by default, ~2x Nano Banana 2 |
 

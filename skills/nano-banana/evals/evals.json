@@ -1,7 +1,7 @@
 {
   "skill": "nano-banana",
   "description": "Trigger accuracy evaluation for the nano-banana skill. Each entry is a user prompt that should or should not trigger this skill. Used with the skill-creator eval framework.",
-  "version": "1.1",
+  "version": "1.2",
   "should_trigger": [
     {
       "query": "Generate me an infographic about renewable energy with bar charts.",
@@ -32,7 +32,7 @@
       "why": "Polish casual landing-page image request - canonical trigger."
     },
     {
-      "query": "What's the difference between Nano Banana 2 and Nano Banana Pro?",
+      "query": "What's the difference between Nano Banana 2.1 and Nano Banana Pro?",
       "why": "Model selection question - skill has a Model Lineup section covering this."
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "query": "My generated image has misspelled text. How do I fix this?",
-      "why": "Troubleshooting - covered in Common Issues table (switch to Pro/NB2, add 'all text ultra-sharp')."
+      "why": "Troubleshooting - covered in Common Issues table (switch to NB 2.1 or Pro, add 'all text ultra-sharp')."
     },
     {
       "query": "Restore this old damaged photo of my grandparents.",
@@ -53,19 +53,27 @@
     },
     {
       "query": "Make a thumbnail for this YouTube video: https://www.youtube.com/watch?v=abc123",
-      "why": "Video-to-image on gemini-3.1-flash-image - the only model taking video input. Documented capability."
+      "why": "Video-to-image, available on gemini-nano-banana-2.1, gemini-3.1-flash-image and gemini-3.1-flash-lite-image, not on Pro. Documented capability."
     },
     {
       "query": "Which Nano Banana model should I use for generating 500 card images cheaply?",
-      "why": "Model selection / cost question - the skill carries the four-model lineup and per-image pricing."
+      "why": "Model selection / cost question - the skill carries the five-model lineup and per-image pricing, including the 1K tie between 2.1 and Lite."
     },
     {
       "query": "My Gemini image call returns 404 for gemini-3.1-flash-image-preview, what changed?",
-      "why": "Deprecated preview ID shut down 2026-06-25 - skill documents the live IDs and shutdown dates."
+      "why": "Preview ID listed as shut down 2026-06-25 - skill documents the live IDs, replacements and shutdown dates."
     },
     {
       "query": "Will Nano Banana render Polish text with the diacritics correct on a poster?",
       "why": "i18n text rendering - skill carries the official best-performance language list and the fallback strategy."
+    },
+    {
+      "query": "We still call gemini-3.1-flash-image in production, do we have to move?",
+      "why": "Deprecated 2026-10-06 with no shutdown date, replacement gemini-nano-banana-2.1. Skill lists what changes on migration, including the loss of 0.5K and the higher input price."
+    },
+    {
+      "query": "Can Gemini generate an 8:1 website banner at 4K?",
+      "why": "Extreme ratio on Nano Banana 2.1 at 1K, 2K and 4K, not on Pro."
     }
   ],
   "should_not_trigger": [

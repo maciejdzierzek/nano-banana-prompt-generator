@@ -12,12 +12,12 @@
       "name": "nano-banana-prompt-generator",
       "source": "./",
       "description": "Write and improve prompts for Nano Banana - Google's Gemini image generation models. Covers Nano Banana 2 (gemini-3.1-flash-image), Nano Banana 2 Lite (gemini-3.1-flash-lite-image), Nano Banana Pro (gemini-3-pro-image) and the deprecated legacy gemini-2.5-flash-image, plus conversational editing, up to 14 reference images, video-to-image, in-image translation, search grounding, YouTube thumbnails and infographics.",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "author": {
         "name": "Maciej Dzierżek",
         "url": "https://maciejdzierzek.com"
       },
-      "homepage": "https://maciejdzierzek.com/narzedzia/generator-nano-banana",
+      "homepage": "https://maciejdzierzek.com/narzedzia/generator-promptow/?model=nano-banana",
       "license": "MIT"
     }
   ]

@@ -4,6 +4,24 @@ All notable changes to the Nano Banana Prompt Generator skill and plugin are doc
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-11-06
+
+### Added
+
+- **Nano Banana 2.1** (`gemini-nano-banana-2.1`, GA 2026-10-06) as the default model, with 1:4, 4:1, 1:8 and 8:1 ratios and a banner prompt pattern.
+
+### Changed
+
+- `gemini-3.1-flash-image` marked as deprecated, no shutdown date. Migration notes: no 0.5K, thinking defaults to `medium`, cheaper image but dearer input and text tokens.
+- Docs links moved to `aistudio.google.com/docs`.
+
+### Fixed
+
+- `gemini-2.5-flash-image` shuts down on 2027-03-15, not 2026-10-02.
+- Lite is not half the price: at 1K the image costs the same as 2.1, Lite only wins on input and text tokens.
+- Video input is not exclusive to one model. Corrected object and character limits for Pro, and capability flags for Lite, legacy and Pro.
+- Veo 3.1 Preview left the Gemini API on 2026-10-22, so the storyboard section was rewritten.
+
 ## [1.2.0] - 2026-08-05
 
 Maintenance audit against Google's official Gemini API docs (`ai.google.dev/gemini-api/docs`, fetched from the canonical `.md.txt` sources on 2026-08-04). **This is a correctness-critical release: the model IDs shipped in v1.1.0 have been shut down by Google.**
